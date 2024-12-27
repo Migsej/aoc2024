@@ -1,7 +1,7 @@
 package main
 
 // corner criteria
-// missing to adjecant thins
+// missing to adjecant things
 // has two adjecant with corner missing
 
 // 012
@@ -30,13 +30,11 @@ adj8x := []int{-1,  0,  1, 1,  1, 0, -1, -1}
 adj8y := []int{-1, -1, -1, 0,  1, 1,  1,  0}
 adj8 := soa_zip(x=adj8x, y=adj8y)
 
-
 cornerindex1 := []int{7, 1, 3, 5}
 cornerindex2 := []int{0, 2, 4, 6}
 cornerindex3 := []int{1, 3, 5, 7}
 
 cornerindex := soa_zip(fst=cornerindex1,snd=cornerindex2,thd=cornerindex3)
-
 
 contains :: proc(haystack: []int, needle: int) -> bool {
   for x in haystack {
@@ -46,7 +44,6 @@ contains :: proc(haystack: []int, needle: int) -> bool {
   }
   return false
 }
-
 
 main :: proc() {
 	data, ok := os.read_entire_file("./real_input.txt")
@@ -91,23 +88,18 @@ main :: proc() {
           neighbourx := vx + diff.x
           neighboury := vy + diff.y
           neighbour_index := neighboury*(line_length+1) + neighbourx
-          outside := neighbourx < 0 || neighboury < 0 || neighbourx >= line_length || neighboury >= lines
-          if outside || data[neighbour_index] != type {
-            continue
+          inside := neighbourx >= 0 && neighboury >= 0 && neighbourx < line_length && neighboury < lines
+          if inside && data[neighbour_index] == type {
+            append(&s, neighbour_index)
           }
-          append(&s, neighbour_index)
         }
         neighbours: [8]bool
         for diff, i in adj8 {
           neighbourx := vx + diff.x
           neighboury := vy + diff.y
           neighbour_index := neighboury*(line_length+1) + neighbourx
-          outside := neighbourx < 0 || neighboury < 0 || neighbourx >= line_length || neighboury >= lines
-          if outside || data[neighbour_index] != type {
-            neighbours[i] = false
-          } else {
-            neighbours[i] = true
-          }
+          inside := neighbourx >= 0 && neighboury >= 0 && neighbourx < line_length && neighboury < lines
+          neighbours[i] = inside && data[neighbour_index] == type
         }
         for corner in cornerindex {
           fst := neighbours[corner.fst]

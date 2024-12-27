@@ -49,7 +49,6 @@ main :: proc() {
       }
       clear(&s)
       append(&s, index)
-
       for len(s) > 0 {
         v := pop(&s)
         if contains(seen[:], v) {
